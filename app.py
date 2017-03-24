@@ -23,6 +23,7 @@ app = Flask(__name__)
 
 my_api_key = "AIzaSyBdAw3e3wCRd9KIds9yMqQUvqM8BjmH1io"
 my_cse_id = "003838730819932693587:t35aahzuprq"
+searchString = ""
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -40,57 +41,51 @@ def webhook():
     return r
 
 
+# construct search query from result.parameters
 def processRequest(req):
+    # if req.get("result").get("action") != "googleSearch":
+    #     return {}
+    # baseurl = "https://query.yahooapis.com/v1/public/yql?"
+    # yql_query = makeYqlQuery(req)
+    # if yql_query is None:
+    #     return {}
+    # yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
+    # result = urlopen(yql_url).read()
+    # data = json.loads(result)
+    # res = makeWebhookResult(data) #takes in api response and returns final json to send back
+    # return res
     if req.get("result").get("action") != "googleSearch":
         return {}
-    baseurl = "https://query.yahooapis.com/v1/public/yql?"
-    yql_query = makeYqlQuery(req)
-    if yql_query is None:
-        return {}
-    yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
-    result = urlopen(yql_url).read()
-    data = json.loads(result)
-    res = makeWebhookResult(data)
-    return res
+    json_params = req.get("result").get("parameters")
+    searchstring = "".join(json_params.values())    # this creates the overall topic which covers user's raw query
+
+    searchString = "%s site:en.wikipedia.org" % searchstring
+
+    searchResults = google_search(searchString, my_api_key, my_cse_id, num=1)    # search for the topic
+    if searchResult is None:
+        return{}
+
+    res = makeWebhookResult(searchResults)
 
 
-def makeYqlQuery(req):
-    result = req.get("result")
-    parameters = result.get("parameters")
-    city = parameters.get("geo-city")
-    if city is None:
-        return None
-
-    return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
+def google_search(search_term, api_key, cse_id, **kwargs):
+    service = build("customsearch", "v1", developerKey=api_key)
+    res = service.cse().list(q=search_term, cx=cse_id, **kwargs).execute()
+    return res['items']
 
 
 def makeWebhookResult(data):
-    query = data.get('query')
+    articleUrl = data[0].get('formattedUrl')
     if query is None:
         return {}
 
-    result = query.get('results')
-    if result is None:
+    if (data[0] is None):
         return {}
 
-    channel = result.get('channel')
-    if channel is None:
-        return {}
+        # print(json.dumps(item, indent=4))
 
-    item = channel.get('item')
-    location = channel.get('location')
-    units = channel.get('units')
-    if (location is None) or (item is None) or (units is None):
-        return {}
-
-    condition = item.get('condition')
-    if condition is None:
-        return {}
-
-    # print(json.dumps(item, indent=4))
-
-    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
-             ", the temperature is " + condition.get('temp') + " " + units.get('temperature')
+    speech = "Please view this article for more information on " + searchString + ": " \
+             articleUrl
 
     print("Response:")
     print(speech)
@@ -100,7 +95,7 @@ def makeWebhookResult(data):
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-weather-webhook-sample"
+        "source": "google-search-webhook"
     }
 
 
