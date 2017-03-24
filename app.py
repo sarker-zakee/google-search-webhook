@@ -83,7 +83,7 @@ def makeWebhookResult(data):
     # print(json.dumps(item, indent=4))
 
     speech = "Please view this article for more information on " + searchString + ": " \
-             articleUrl
+             + articleUrl
 
     print("Response:")
     print(speech)
