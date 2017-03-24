@@ -62,7 +62,7 @@ def processRequest(req):
     searchString = "robot %s site:en.wikipedia.org" % searchstring
 
     searchResults = google_search(searchString, my_api_key, my_cse_id, num=1)    # search for the topic
-    if searchResult is None:
+    if searchResults is None:
         return{}
 
     res = makeWebhookResult(searchResults)
