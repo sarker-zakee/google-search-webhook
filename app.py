@@ -76,14 +76,11 @@ def google_search(search_term, api_key, cse_id, **kwargs):
 
 
 def makeWebhookResult(data):
-    articleUrl = data[0].get('formattedUrl')
-    if query is None:
-        return {}
-
     if (data[0] is None):
         return {}
 
-        # print(json.dumps(item, indent=4))
+    articleUrl = data[0].get('formattedUrl')
+    # print(json.dumps(item, indent=4))
 
     speech = "Please view this article for more information on " + searchString + ": " \
              articleUrl
