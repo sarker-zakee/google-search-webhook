@@ -21,10 +21,6 @@ import pprint
 # Flask app should start in global layout
 app = Flask(__name__)
 
-my_api_key = "AIzaSyBdAw3e3wCRd9KIds9yMqQUvqM8BjmH1io"
-my_cse_id = "003838730819932693587:t35aahzuprq"
-searchString = ""
-
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
@@ -61,11 +57,13 @@ def processRequest(req):
 
     searchString = "robot %s site:en.wikipedia.org" % searchstring
 
+    my_api_key = "AIzaSyBdAw3e3wCRd9KIds9yMqQUvqM8BjmH1io"
+    my_cse_id = "003838730819932693587:t35aahzuprq"
     searchResults = google_search(searchString, my_api_key, my_cse_id, num=1)    # search for the topic
     if searchResults is None:
         return{}
 
-    res = makeWebhookResult(searchResults)
+    res = makeWebhookResult(searchResults, searchstring)
     return res
 
 
@@ -75,14 +73,14 @@ def google_search(search_term, api_key, cse_id, **kwargs):
     return res['items']
 
 
-def makeWebhookResult(data):
+def makeWebhookResult(data, searchstring):
     if (data[0] is None):
         return {}
 
     articleUrl = data[0].get('formattedUrl')
     # print(json.dumps(item, indent=4))
 
-    speech = "Please view this article for more information on " + searchString + ": " \
+    speech = "Please view this article for more information on " + searchstring + ": " \
              + articleUrl
 
     print("Response:")
