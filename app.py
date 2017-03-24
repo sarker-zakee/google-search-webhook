@@ -66,6 +66,7 @@ def processRequest(req):
         return{}
 
     res = makeWebhookResult(searchResults)
+    return res
 
 
 def google_search(search_term, api_key, cse_id, **kwargs):
