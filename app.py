@@ -59,7 +59,7 @@ def processRequest(req):
     json_params = req.get("result").get("parameters")
     searchstring = "".join(json_params.values())    # this creates the overall topic which covers user's raw query
 
-    searchString = "%s site:en.wikipedia.org" % searchstring
+    searchString = "robot %s site:en.wikipedia.org" % searchstring
 
     searchResults = google_search(searchString, my_api_key, my_cse_id, num=1)    # search for the topic
     if searchResult is None:
