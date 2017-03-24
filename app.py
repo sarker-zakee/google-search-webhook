@@ -15,9 +15,14 @@ from flask import Flask
 from flask import request
 from flask import make_response
 
+from googleapiclient.discovery import build
+import pprint
+
 # Flask app should start in global layout
 app = Flask(__name__)
 
+my_api_key = "AIzaSyBdAw3e3wCRd9KIds9yMqQUvqM8BjmH1io"
+my_cse_id = "003838730819932693587:t35aahzuprq"
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -36,7 +41,7 @@ def webhook():
 
 
 def processRequest(req):
-    if req.get("result").get("action") != "yahooWeatherForecast":
+    if req.get("result").get("action") != "googleSearch":
         return {}
     baseurl = "https://query.yahooapis.com/v1/public/yql?"
     yql_query = makeYqlQuery(req)
