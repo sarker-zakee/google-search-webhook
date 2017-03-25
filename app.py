@@ -54,7 +54,7 @@ def processRequest(req):
         return {}
     json_params = req.get("result").get("parameters")
     searchstring = ''.join(json_params.values())    # this creates the overall topic which covers user's raw query
-    print searchstring
+    print(searchstring)
     searchString = "robot %s site:en.wikipedia.org" % searchstring
 
     my_api_key = "AIzaSyBdAw3e3wCRd9KIds9yMqQUvqM8BjmH1io"
