@@ -51,9 +51,9 @@ def processRequest(req):
     print(searchstring)
     searchString = "robot %s" % searchstring
 
-    # KEYS SHOULDNT BE DISPLAYED LIKE THIS BUT THIS ISNT A SECURE APP
-    my_api_key = "AIzaSyBdAw3e3wCRd9KIds9yMqQUvqM8BjmH1io"
-    my_cse_id = "003838730819932693587:t35aahzuprq"
+    # KEYS SHOULDNT BE DISPLAYED
+    my_api_key = ""
+    my_cse_id = ""
     searchResults = google_search(searchString, my_api_key, my_cse_id, num=1)    # search for the topic
 
     if searchResults is None:
