@@ -41,7 +41,7 @@ def webhook():
 def processRequest(req):
 
     if req.get("result").get("action") != "googleSearch":
-        return None
+        return {}
     json_params = req.get("result").get("parameters")
     searchstring = ''    # this creates the overall topic which covers user's raw query
 
@@ -49,7 +49,7 @@ def processRequest(req):
         searchstring += value
         searchstring += " "
     print(searchstring)
-    searchString = "robot %s site:en.wikipedia.org" % searchstring
+    searchString = "robot %s" % searchstring
 
     # KEYS SHOULDNT BE DISPLAYED LIKE THIS BUT THIS ISNT A SECURE APP
     my_api_key = "AIzaSyBdAw3e3wCRd9KIds9yMqQUvqM8BjmH1io"
