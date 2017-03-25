@@ -39,19 +39,9 @@ def webhook():
 
 # construct search query from result.parameters
 def processRequest(req):
-    # if req.get("result").get("action") != "googleSearch":
-    #     return {}
-    # baseurl = "https://query.yahooapis.com/v1/public/yql?"
-    # yql_query = makeYqlQuery(req)
-    # if yql_query is None:
-    #     return {}
-    # yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
-    # result = urlopen(yql_url).read()
-    # data = json.loads(result)
-    # res = makeWebhookResult(data) #takes in api response and returns final json to send back
-    # return res
+
     if req.get("result").get("action") != "googleSearch":
-        return {}
+        return None
     json_params = req.get("result").get("parameters")
     searchstring = ''    # this creates the overall topic which covers user's raw query
 
@@ -61,9 +51,11 @@ def processRequest(req):
     print(searchstring)
     searchString = "robot %s site:en.wikipedia.org" % searchstring
 
+    # KEYS SHOULDNT BE DISPLAYED LIKE THIS BUT THIS ISNT A SECURE APP
     my_api_key = "AIzaSyBdAw3e3wCRd9KIds9yMqQUvqM8BjmH1io"
     my_cse_id = "003838730819932693587:t35aahzuprq"
     searchResults = google_search(searchString, my_api_key, my_cse_id, num=1)    # search for the topic
+
     if searchResults is None:
         return{}
 
