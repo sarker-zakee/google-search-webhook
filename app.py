@@ -20,6 +20,7 @@ import pprint
 
 # Flask app should start in global layout
 app = Flask(__name__)
+app._static_folder = os.path.abspath(__file__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
