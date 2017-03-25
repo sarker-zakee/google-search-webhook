@@ -53,7 +53,11 @@ def processRequest(req):
     if req.get("result").get("action") != "googleSearch":
         return {}
     json_params = req.get("result").get("parameters")
-    searchstring = ''.join(json_params.values())    # this creates the overall topic which covers user's raw query
+    searchstring = ''    # this creates the overall topic which covers user's raw query
+
+    for value in json_params.values():
+        searchstring += value
+        searchstring += " "
     print(searchstring)
     searchString = "robot %s site:en.wikipedia.org" % searchstring
 
