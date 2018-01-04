@@ -33,7 +33,7 @@ def webhook():
 def ProcessRequest(req):
     if req.get("queryResult").get("action") != "Maths":
         return {}
-    json_params = req.get("result").get("queryText")
+    json_params = req.get("queryResult").get("queryText")
     take = json_params.split()
 
     sum = 0
@@ -67,4 +67,3 @@ if __name__ == '__main__':
     print("Starting app on port %d" % port)
 
     app.run(debug=False, port=port, host='0.0.0.0')
-
