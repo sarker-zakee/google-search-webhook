@@ -58,7 +58,13 @@ def ProcessRequest(req):
             return "Invalid"
 
     res = sum
-    return res
+    return {
+        "speech": "here is the result of the calculation " + str(res),
+        "displayText": str(res),
+        "data": {},
+        "contextOut": [],
+        "source": "cramstack-backend"
+    }
 
 
 if __name__ == '__main__':
