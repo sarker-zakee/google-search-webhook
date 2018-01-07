@@ -63,7 +63,13 @@ def ProcessRequest(req):
         "displayText": str(res),
         # "data": {},
         # "contextOut": [],
-        "source": "cramstack-backend"
+        "source": "cramstack-backend",
+         "messages": [
+        {
+          "type": 0,
+          "speech":"Here is the result of the calculation"
+        }
+      ]
     }
 
 
