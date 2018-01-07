@@ -31,43 +31,19 @@ def webhook():
 
 # construct search query from result.parameters
 def ProcessRequest(req):
-    if req.get("queryResult").get("action") != "Maths":
+    if req.get("result").get("action") != "Maths":
         return {}
-    json_params = req.get("queryResult").get("queryText")
-    take = json_params.split()
+    result = req.get("result")
+    parameters = result.get("parameters")
+    value1 = parameters.get("number")
+    value2 = parameters.get("number1")
 
-    sum = 0
-
-    if take[1] == '+':
-        sum = int(take[0] + '') + int(take[2] + '')
-        # print(sum)
-
-    if take[1] == '-':
-        sum = int(take[0] + '') - int(take[2] + '')
-        # print(sum)
-
-    if take[1] == '*':
-        sum = int(take[0] + '') * int(take[2] + '')
-        # print(sum)
-
-    if take[1] == '/':
-        if int(take[2]) != 0:
-            sum = int(take[0] + '') / int(take[2] + '')
-            # print(sum)
-        else:
-            return "Invalid"
-
-    res = sum
+    sum = int(value1) + int(value2)
+    res = "The sum of two number is: " + str(sum)
     return {
-    
-           "displayText": str(res),
-           # "data": {},
-           # "contextOut": [],
-          "source": "cramstack-backend"
-          "type": 0,
-          "speech": "Today the weather in Dhaka: Sunny, And the temperature is 71 F"
-        
-      
+        "speech": res,
+        "displayText": res,
+        "source": "Athena"
     }
 
 
@@ -77,3 +53,4 @@ if __name__ == '__main__':
     print("Starting app on port %d" % port)
 
     app.run(debug=False, port=port, host='0.0.0.0')
+
