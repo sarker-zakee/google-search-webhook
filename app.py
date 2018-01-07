@@ -3,10 +3,6 @@ from future.standard_library import install_aliases
 
 install_aliases()
 
-from urllib.parse import urlparse, urlencode
-from urllib.request import urlopen, Request
-from urllib.error import HTTPError
-
 import json
 import os
 
@@ -14,30 +10,30 @@ from flask import Flask
 from flask import request
 from flask import make_response
 
-# Flask app should start in global layout
 app = Flask(__name__)
 
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
 
     print("Request:")
     print(json.dumps(req, indent=4))
 
-    res = processRequest(req)
+    res = ProcessRequest(req)
 
     res = json.dumps(res, indent=4)
-    # print(res)
+    print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
 
 
-def processRequest(req):
-    if req.get("result").get("action") != "Maths":
+# construct search query from result.parameters
+def ProcessRequest(req):
+    if req.get("queryResult").get("action") != "Maths":
         return {}
-    json_params = req.get("result").get("queryText")
+    json_params = req.get("queryResult").get("queryText")
     take = json_params.split()
 
     sum = 0
@@ -64,10 +60,16 @@ def processRequest(req):
     res = sum
     return {
         "speech": "Here is the result of the calculation",
-        "displayText": res,
+        "displayText": str(res),
         # "data": {},
         # "contextOut": [],
         "source": "cramstack-backend",
+         "messages": [
+        {
+          "type": 0,
+          "speech":"Here is the result of the calculation"
+        }
+      ]
     }
 
 
