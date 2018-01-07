@@ -59,17 +59,11 @@ def ProcessRequest(req):
 
     res = sum
     return {
-        "speech": "Here is the result of the calculation",
         "displayText": str(res),
         # "data": {},
         # "contextOut": [],
-        "source": "cramstack-backend",
-         "messages": [
-        {
-          "type": 0,
-          "speech":"Here is the result of the calculation"
-        }
-      ]
+        "source": "cramstack-backend"
+        
     }
 
 
