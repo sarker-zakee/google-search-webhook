@@ -31,9 +31,9 @@ def webhook():
 
 # construct search query from result.parameters
 def ProcessRequest(req):
-    if req.get("result").get("action") != "Maths":
+    if req.get("queryResult").get("action") != "Maths":
         return {}
-    result = req.get("result")
+    result = req.get("queryResult")
     parameters = result.get("parameters")
     value1 = parameters.get("number")
     value2 = parameters.get("number1")
