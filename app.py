@@ -59,17 +59,15 @@ def ProcessRequest(req):
 
     res = sum
     return {
-       
-        "messages": [
-        {
+    
            "displayText": str(res),
            # "data": {},
            # "contextOut": [],
           "source": "cramstack-backend"
           "type": 0,
           "speech": "Today the weather in Dhaka: Sunny, And the temperature is 71 F"
-        }
-      ]
+        
+      
     }
 
 
