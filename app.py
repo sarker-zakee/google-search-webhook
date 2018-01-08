@@ -39,7 +39,7 @@ def MakeWebRequest(req):
 
 
 if __name__ == '__main__':
-    port = int(os.getenv('POST', 8000))
+    port = int(os.getenv('POST', 80))
     print("Starting app on %d" % port)
     app.run(debug=True, port=port, host='0.0.0.0')
 
